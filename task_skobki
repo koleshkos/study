@@ -1,0 +1,11 @@
+var
+ s:string;
+ i,k:integer;
+begin
+ read(s);
+ k:=0;i:=1;
+ while (i<=length(s)) and (k>0) do begin
+  if s[i]='(' then inc(k) else if s[i]=')' then dec(k); inc(i);
+  end;
+ if (k=0) and (i=length(s)+1) then writeln('good') else writeln('not good'); 
+end.
