@@ -1,0 +1,21 @@
+npp_save
+
+cd $(CURRENT_DIRECTORY)
+rm $(NAME_PART).exe
+fpc $(NAME_PART).pas
+
+NPP_EXEC CheckIfFileExists "$(NAME_PART).exe"
+if $(FILEEXISTS) == 0 goto end
+
+set i = 0
+:loop
+set i ~ $(i) + 1
+if $(i) > 10 goto end
+NPP_EXEC CheckIfFileExists "in$(i).txt"
+if $(FILEEXISTS) == 0 goto loop
+rm input.txt
+rm output.txt
+cp in$(i).txt input.txt
+NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt"
+goto loop
+:end
