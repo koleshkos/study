@@ -1,0 +1,7 @@
+set FILEEXISTS = 0
+npe_console v+
+cmd /c if exist $(ARGV) echo Exists
+if "$(OUTPUTL)" != "Exists" goto ...
+set FILEEXISTS = 1
+:...
+npe_console v-
