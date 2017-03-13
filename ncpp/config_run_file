@@ -15,14 +15,14 @@ set i = 0
   if $(FILEEXISTS) == 0 goto end
   NPP_CONSOLE disable
   set t = 0
-  :loop2
-    set  t ~ $(t) + 1
-      if $(t) < 3000 goto loop2
   NPP_CONSOLE enable
   echo $(t)
   rm input.txt
   rm output.txt
   cp in$(i).txt input.txt
-  NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt"
+  :loop2
+    NPP_EXEC CheckIfFileExists "output.txt"
+    if $(FILEEXISTS) == 1 goto loop2
+  NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt && rm output.txt"
   goto loop
 :end
