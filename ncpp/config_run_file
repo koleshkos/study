@@ -9,13 +9,20 @@ if $(FILEEXISTS) == 0 goto end
 
 set i = 0
 :loop
-set i ~ $(i) + 1
-if $(i) > 10 goto end
-NPP_EXEC CheckIfFileExists "in$(i).txt"
-if $(FILEEXISTS) == 0 goto loop
-rm input.txt
-rm output.txt
-cp in$(i).txt input.txt
-NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt"
-goto loop
+  set i ~ $(i) + 1
+  if $(i) > 10 goto end
+  NPP_EXEC CheckIfFileExists "in$(i).txt"
+  if $(FILEEXISTS) == 0 goto end
+  NPP_CONSOLE disable
+  set t = 0
+  :loop2
+    set  t ~ $(t) + 1
+      if $(t) < 3000 goto loop2
+  NPP_CONSOLE enable
+  echo $(t)
+  rm input.txt
+  rm output.txt
+  cp in$(i).txt input.txt
+  NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt"
+  goto loop
 :end
