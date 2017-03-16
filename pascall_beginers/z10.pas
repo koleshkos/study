@@ -12,7 +12,7 @@ begin
   for j:=1 to 5 do begin 
 	read(a);
 	a:=-a;
-	writeln(a,' ');
+	write(a,' ');
    end;
    
  close(input);
