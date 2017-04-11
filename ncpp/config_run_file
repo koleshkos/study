@@ -7,22 +7,22 @@ fpc $(NAME_PART).pas
 NPP_EXEC CheckIfFileExists "$(NAME_PART).exe"
 if $(FILEEXISTS) == 0 goto end
 
+rm input.txt
+rm output.txt
+
 set i = 0
 :loop
   set i ~ $(i) + 1
   if $(i) > 10 goto end
   NPP_EXEC CheckIfFileExists "in$(i).txt"
   if $(FILEEXISTS) == 0 goto end
-  NPP_CONSOLE disable
-  set t = 0
-  NPP_CONSOLE enable
-  echo $(t)
-  rm input.txt
-  rm output.txt
-  cp in$(i).txt input.txt
   :loop2
     NPP_EXEC CheckIfFileExists "output.txt"
     if $(FILEEXISTS) == 1 goto loop2
-  NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt && rm output.txt"
+  :loop3
+    NPP_EXEC CheckIfFileExists "input.txt"
+    if $(FILEEXISTS) == 1 goto loop3
+  cp in$(i).txt input.txt
+  NPP_RUN cmd /k "echo TEST$(i): && type in$(i).txt && echo. && $(NAME_PART).exe && fc /L output.txt out$(i).txt && rm output.txt && rm input.txt"
   goto loop
 :end
